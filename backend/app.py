@@ -75,10 +75,10 @@ def save_emotion():
     emotion = data.get("emotion", "").strip().lower()  # Clean and normalize the input
 
     emotion_messages = {
-        "happy": "https://open.spotify.com/playlist/37i9dQZF1EIgG2NEOhqsD7?si=d329ea97c3fe4f41",
-        "neutral": "https://open.spotify.com/playlist/37i9dQZF1EIfeeY1Nyg89M?si=d162445c849a4faa",
-        "sad": "https://open.spotify.com/playlist/37i9dQZF1DXbrUpGvoi3TS?si=c3f920d4f0fe4aee",
-        "angry": "https://open.spotify.com/playlist/37i9dQZF1EIcRK7JMCMZ3M?si=d5b9014fe8474017",
+        "happy": "https://open.spotify.com/playlist/7GhawGpb43Ctkq3PRP1fOL?si=4ce094628a3b48d0",
+        "neutral": "https://open.spotify.com/playlist/2T3BSpqN34Z4sppHDNWoeE?si=542ebaaf3a9c4b9c",
+        "sad": "https://open.spotify.com/playlist/0wgd9yLXEpwmwMjCTx3RFW?si=43d62f169abf49b0",
+        "angry": "https://open.spotify.com/playlist/4WEn4bQ84SdvLIkwWqa1H8?si=863f9abbbe2e4d27",
         "surprise": "https://open.spotify.com/playlist/5rRvWEETOsUk0tyhZ30cCw?si=df6e66d314aa4b98"
     }
 
