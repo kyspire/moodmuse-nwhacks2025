@@ -41,13 +41,13 @@ def capture_emotion():
         equalized_frame = cv2.equalizeHist(gray_frame)
         processed_frame = cv2.cvtColor(equalized_frame, cv2.COLOR_GRAY2BGR)
 
-        result = DeepFace.analyze(processed_frame, actions=['emotion'], 
-                                detector_backend='mtcnn', 
+        result = DeepFace.analyze(processed_frame, actions=['emotion'],
+                                detector_backend='mtcnn',
                                 enforce_detection=False)
 
         faces = result if isinstance(result, list) else [result]
         dominant_emotion = faces[0]['dominant_emotion'] if faces else "No face detected"
-        
+
         # Draw on a copy of the frame to avoid modifying the video feed
         display_frame = frame.copy()
         for face_data in faces:
@@ -59,7 +59,7 @@ def capture_emotion():
 
         # Save the annotated frame
         _, buffer = cv2.imencode('.jpg', display_frame)
-        
+
         return jsonify({
             "emotion": dominant_emotion,
             "frame": buffer.tobytes().hex()  # Send the annotated frame to frontend
@@ -73,14 +73,25 @@ def capture_emotion():
 def save_emotion():
     data = request.json  # Receive the JSON data from the frontend
     emotion = data.get("emotion", "")
-    
-    if emotion:
-        # Save the emotion in a file (you can change this to a database or other storage)
+
+    emotion_messages = {
+        "angry": "I am feeling angry today.",
+        "surprised": "I am feeling surprised today.",
+        "happy": "I am happy today.",
+        "sad": "I am feeling sad today.",
+        "neutral": "I am feeling neutral today."
+    }
+
+    # Use the dictionary to determine the message
+    message = emotion_messages.get(emotion)
+
+    if message:
+        # Save the corresponding message to a file
         with open("detected_emotions.txt", "a") as file:
-            file.write(f"{emotion}\n")
+            file.write(f"{message}\n")
         return jsonify({"message": "Emotion saved successfully!"}), 200
     else:
-        return jsonify({"error": "No emotion provided!"}), 400
+        return jsonify({"error": "Invalid or no emotion provided!"}), 400
 
 if __name__ == "__main__":
     app.run(debug=True)
