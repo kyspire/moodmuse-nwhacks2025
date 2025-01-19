@@ -72,26 +72,30 @@ def capture_emotion():
 @app.route("/save_emotion", methods=["POST"])
 def save_emotion():
     data = request.json  # Receive the JSON data from the frontend
-    emotion = data.get("emotion", "")
+    emotion = data.get("emotion", "").strip().lower()  # Clean and normalize the input
 
     emotion_messages = {
-        "happy": "https://open.spotify.com/playlist/37i9dQZF1EIgG2NEOhqsD7?si=d329ea97c3fe4f41 ",
-        "neutral": "https://open.spotify.com/playlist/37i9dQZF1EIfeeY1Nyg89M?si=d162445c849a4faa ",
+        "happy": "https://open.spotify.com/playlist/37i9dQZF1EIgG2NEOhqsD7?si=d329ea97c3fe4f41",
+        "neutral": "https://open.spotify.com/playlist/37i9dQZF1EIfeeY1Nyg89M?si=d162445c849a4faa",
         "sad": "https://open.spotify.com/playlist/37i9dQZF1DXbrUpGvoi3TS?si=c3f920d4f0fe4aee",
         "angry": "https://open.spotify.com/playlist/37i9dQZF1EIcRK7JMCMZ3M?si=d5b9014fe8474017",
         "surprise": "https://open.spotify.com/playlist/5rRvWEETOsUk0tyhZ30cCw?si=df6e66d314aa4b98"
     }
 
-    # Use the dictionary to determine the message
-    message = emotion_messages.get(emotion)
+    # Get the Spotify playlist URL based on the emotion
+    playlist_url = emotion_messages.get(emotion)
 
-    if message:
-        # Save the corresponding message to a file
-        with open("detected_emotions.txt", "a") as file:
-            file.write(f"{message}\n")
-        return jsonify({"message": "Emotion saved successfully!"}), 200
+    if playlist_url:
+        # Overwrite the file with the new emotion link (clearing previous content)
+        with open("detected_emotions.txt", "w") as file:
+            file.write(f"{playlist_url}\n")
+
+        return jsonify({"message": "Emotion saved successfully!", "playlist": playlist_url}), 200
     else:
         return jsonify({"error": "Invalid or no emotion provided!"}), 400
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+
