@@ -24,12 +24,23 @@ const Login = () => {
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      minHeight: '100vh',
-      textAlign: 'center'
+      minHeight: '100vh',  // Ensure full viewport height
+      width: '100vw',      // Ensure full viewport width
+      textAlign: 'center',
+      backgroundImage: `url('/login_background.jpg')`,  // Correct path for public folder
+      backgroundSize: 'cover',  // Cover the whole screen
+      backgroundPosition: 'center',  // Center the image
+      backgroundRepeat: 'no-repeat',  // Prevent tiling
+      margin: 0,
+      padding: 0
     }}>
-      <h1>Emotion Detection with Spotify</h1>
-      <p>Please login with your Spotify account to continue</p>
-      <button 
+      <h1 style={{ color: 'white', fontSize: '2.5rem', textShadow: '2px 2px 5px rgba(0,0,0,0.7)' }}>
+        Emotion Detection with Spotify
+      </h1>
+      <p style={{ color: 'white', fontSize: '1.2rem', textShadow: '1px 1px 3px rgba(0,0,0,0.5)' }}>
+        Please login with your Spotify account to continue
+      </p>
+      <button
         onClick={handleLogin}
         style={{
           backgroundColor: '#1DB954',
@@ -40,8 +51,12 @@ const Login = () => {
           fontSize: '16px',
           fontWeight: 'bold',
           cursor: 'pointer',
-          marginTop: '20px'
+          marginTop: '20px',
+          boxShadow: '0px 4px 10px rgba(0,0,0,0.3)',
+          transition: 'transform 0.3s ease'
         }}
+        onMouseOver={(e) => e.target.style.transform = 'scale(1.1)'}
+        onMouseOut={(e) => e.target.style.transform = 'scale(1.0)'}
       >
         Login with Spotify
       </button>
@@ -49,4 +64,5 @@ const Login = () => {
   );
 };
 
-export default Login; 
+export default Login;
+;
