@@ -74,28 +74,27 @@ def save_emotion():
     data = request.json  # Receive the JSON data from the frontend
     emotion = data.get("emotion", "").strip().lower()  # Clean and normalize the input
 
+    # Updated playlist URLs
     emotion_messages = {
-        "happy": "https://open.spotify.com/playlist/7GhawGpb43Ctkq3PRP1fOL?si=4ce094628a3b48d0",
-        "neutral": "https://open.spotify.com/playlist/2T3BSpqN34Z4sppHDNWoeE?si=542ebaaf3a9c4b9c",
-        "sad": "https://open.spotify.com/playlist/0wgd9yLXEpwmwMjCTx3RFW?si=43d62f169abf49b0",
-        "angry": "https://open.spotify.com/playlist/4WEn4bQ84SdvLIkwWqa1H8?si=863f9abbbe2e4d27",
-        "surprise": "https://open.spotify.com/playlist/5rRvWEETOsUk0tyhZ30cCw?si=df6e66d314aa4b98"
+        "happy": "https://open.spotify.com/playlist/1w7tVF1FNvEUAm7E9z1tJm?si=797097960db74758",
+        "neutral": "https://open.spotify.com/playlist/34orYzjHuE8jSa2tNVRboD?si=f029a024b8574f03",
+        "sad": "https://open.spotify.com/playlist/2POIxN34EuQzvRhJgzJEDm?si=0dd097ea59864b38",
+        "angry": "https://open.spotify.com/playlist/4J5SFlNlNL1P8q85hqMNhp?si=78d5b2a196564e34",
+        "fear": "https://open.spotify.com/playlist/4IDSD0iKCVlQQXT294vUfr?si=31165b2c8377402f",
+        "other": "https://open.spotify.com/playlist/70gIIiRlJP7u8UrwBU6TZM?si=bbcf812b2220487a"
     }
 
     # Get the Spotify playlist URL based on the emotion
-    playlist_url = emotion_messages.get(emotion)
+    playlist_url = emotion_messages.get(emotion, emotion_messages["other"])  # Use "other" as fallback
 
-    if playlist_url:
-        # Overwrite the file with the new emotion link (clearing previous content)
-        with open("detected_emotions.txt", "w") as file:
-            file.write(f"{playlist_url}\n")
+    # Save the detected emotion playlist URL to a file (optional)
+    with open("detected_emotions.txt", "w") as file:
+        file.write(f"{playlist_url}\n")
 
-        return jsonify({"message": "Emotion saved successfully!", "playlist": playlist_url}), 200
-    else:
-        return jsonify({"error": "Invalid or no emotion provided!"}), 400
+    return jsonify({"message": "Emotion saved successfully!", "playlist": playlist_url}), 200
+
 
 if __name__ == "__main__":
     app.run(debug=True)
-
 
 
