@@ -4,3 +4,8 @@ opencv-python==4.5.5.64
 opencv-python-headless==4.5.5.64
 fer==0.2
 flask-cors==3.1.1
+
+
+## not sure
+tensorflow==2.18.0
+deepface==0.0.93
