@@ -21,35 +21,7 @@ def video_feed():
             if not success:
                 break
             else:
-                try:
-                    # Preprocess: Convert to grayscale and equalize histogram
-                    gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-                    equalized_frame = cv2.equalizeHist(gray_frame)
-                    processed_frame = cv2.cvtColor(equalized_frame, cv2.COLOR_GRAY2BGR)
-
-                    # Analyze the current frame with DeepFace to detect emotions
-                    result = DeepFace.analyze(processed_frame, actions=['emotion'], detector_backend='mtcnn', enforce_detection=False)
-
-                    # Ensure result is a list (handles multiple faces)
-                    faces = result if isinstance(result, list) else [result]
-
-                    for face_data in faces:
-                        dominant_emotion = face_data['dominant_emotion']
-
-                        # Draw rectangle and label around the detected face
-                        x, y, w, h = face_data['region']['x'], face_data['region']['y'], face_data['region']['w'], face_data['region']['h']
-                        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-                        label = f'Emotion: {dominant_emotion}'
-                        text_size, _ = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2)
-                        text_x = x + w - text_size[0]
-                        text_y = y - 10 if y - 10 > 20 else y + 20
-                        cv2.rectangle(frame, (text_x - 5, text_y - 25), (text_x + text_size[0] + 5, text_y), (0, 255, 0), -1)
-                        cv2.putText(frame, label, (text_x, text_y), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2, cv2.LINE_AA)
-
-                except Exception as e:
-                    print(f"Error in DeepFace analysis: {e}")
-
-                # Encode the frame as JPEG
+                # Simple frame encoding without any processing
                 _, buffer = cv2.imencode('.jpg', frame)
                 yield (b'--frame\r\n'
                        b'Content-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n')
@@ -69,12 +41,29 @@ def capture_emotion():
         equalized_frame = cv2.equalizeHist(gray_frame)
         processed_frame = cv2.cvtColor(equalized_frame, cv2.COLOR_GRAY2BGR)
 
-        result = DeepFace.analyze(processed_frame, actions=['emotion'], detector_backend='mtcnn', enforce_detection=False)
+        result = DeepFace.analyze(processed_frame, actions=['emotion'], 
+                                detector_backend='mtcnn', 
+                                enforce_detection=False)
 
         faces = result if isinstance(result, list) else [result]
         dominant_emotion = faces[0]['dominant_emotion'] if faces else "No face detected"
         
-        return jsonify({"emotion": dominant_emotion})
+        # Draw on a copy of the frame to avoid modifying the video feed
+        display_frame = frame.copy()
+        for face_data in faces:
+            # Draw rectangle and emotion label
+            x, y, w, h = face_data['region']['x'], face_data['region']['y'], face_data['region']['w'], face_data['region']['h']
+            cv2.rectangle(display_frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            label = f'Emotion: {dominant_emotion}'
+            cv2.putText(display_frame, label, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+
+        # Save the annotated frame
+        _, buffer = cv2.imencode('.jpg', display_frame)
+        
+        return jsonify({
+            "emotion": dominant_emotion,
+            "frame": buffer.tobytes().hex()  # Send the annotated frame to frontend
+        })
 
     except Exception as e:
         print(f"Error in emotion capture: {e}")
