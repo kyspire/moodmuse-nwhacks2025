@@ -8,7 +8,7 @@ const FaceRecognition = () => {
     try {
       const emotionResponse = await fetch("http://127.0.0.1:5000/capture_emotion");
       const emotionData = await emotionResponse.json();
-      const detectedEmotion = emotionData.emotion || "other";
+      const detectedEmotion = emotionData.emotion || "neutral";
 
       setEmotion(detectedEmotion);
 
@@ -42,10 +42,29 @@ const FaceRecognition = () => {
     }
   }, []);
 
+  // ## changed - Function to determine background color based on emotion
+  const getBackgroundColor = () => {
+    switch (emotion) {
+      case "happy":
+        return "#ffff99"; // Yellow for happy
+      case "angry":
+        return "#ff6666"; // Red for angry
+      case "sad":
+        return "#99ccff"; // Blue for sad
+      case "surprise":
+        return "#d19fe8"; // Purple for surprise
+      case "neutral":
+      default:
+        return "#ffffff"; // White for neutral
+    }
+  };
+
   return (
-    <div style={styles.container}>
+    <div style={{ ...styles.container, backgroundColor: getBackgroundColor() }}>
       <style>
+        {`
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto+Mono:wght@400;700&display=swap");
+        `}
       </style>
       <div style={styles.content}>
         <h1 style={styles.title}>Emotion-Based Music Recommender</h1>
@@ -97,16 +116,15 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    background: "linear-gradient(135deg, #1e1e2f, #232344)",
-    color: "#ffffff",
     padding: "20px",
+    transition: "background-color 1s ease-in-out", // ## changed - Smooth background transition
   },
   content: {
-    backgroundColor: "#2d2d3a",
+    backgroundColor: "rgba(45, 45, 58, 0.8)",
     borderRadius: "16px",
     padding: "40px",
     boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.5)",
-    maxWidth: "60000px",
+    maxWidth: "600px",
     width: "100%",
   },
   title: {
@@ -181,3 +199,4 @@ const styles = {
 };
 
 export default FaceRecognition;
+
