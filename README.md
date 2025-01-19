@@ -20,3 +20,7 @@ In frontend folder, cd into my-app and run: npm run dev
 
 In backend folder, run: python3 app.py
 
+
+To set up spotify environment: go into Spotify Dev and go into dashboard. Add the project details. Use 
+http://localhost:5173/callback as the redirect_uri and take the personal spotify token. Make a .env file with VITE_SPOTIFY_CLIENT_ID= your id here
+
