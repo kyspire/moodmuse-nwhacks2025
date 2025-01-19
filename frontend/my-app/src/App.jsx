@@ -1,8 +1,10 @@
 import React from "react";
+import Header from "./components/Header";
 
 function App() {
   return (
     <div style={{ textAlign: "center" }}>
+      <Header />
       <h1>OpenCV Face Recognition</h1>
       <p>Below is the live video feed from the backend:</p>
       <img
