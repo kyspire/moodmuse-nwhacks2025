@@ -75,11 +75,11 @@ def save_emotion():
     emotion = data.get("emotion", "")
 
     emotion_messages = {
-        "angry": "I am feeling angry today.",
-        "surprised": "I am feeling surprised today.",
-        "happy": "I am happy today.",
-        "sad": "I am feeling sad today.",
-        "neutral": "I am feeling neutral today."
+        "happy": "https://open.spotify.com/playlist/37i9dQZF1EIgG2NEOhqsD7?si=d329ea97c3fe4f41 ",
+        "neutral": "https://open.spotify.com/playlist/37i9dQZF1EIfeeY1Nyg89M?si=d162445c849a4faa ",
+        "sad": "https://open.spotify.com/playlist/37i9dQZF1DXbrUpGvoi3TS?si=c3f920d4f0fe4aee",
+        "angry": "https://open.spotify.com/playlist/37i9dQZF1EIcRK7JMCMZ3M?si=d5b9014fe8474017",
+        "surprise": "https://open.spotify.com/playlist/5rRvWEETOsUk0tyhZ30cCw?si=df6e66d314aa4b98"
     }
 
     # Use the dictionary to determine the message
