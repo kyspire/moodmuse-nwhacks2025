@@ -1,7 +1,7 @@
 # moodmuse demo 
 https://youtu.be/EadegHrz970
 
-# open-cv-playlist
+# moodmuse
 
 make sure you're using the virtual environment!
 
