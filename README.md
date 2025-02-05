@@ -13,6 +13,7 @@ source nwhacks/bin/activate ~ to activate, make 2 terminals. One for the fronten
 
 pip install -r requirements.txt ~ to install the requirements 
 
+02/05/2025 DOCKER IN PROTOTYPE MAY NOT BE WORKING AS INTENDED.
 In frontend folder, cd into my-app and run: 
 docker build -t my-frontend . 
 docker run -p 3000:3000 my-frontend
