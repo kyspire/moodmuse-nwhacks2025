@@ -13,13 +13,10 @@ source nwhacks/bin/activate ~ to activate, make 2 terminals. One for the fronten
 
 pip install -r requirements.txt ~ to install the requirements 
 
-pip install deepface
+In frontend folder, cd into my-app and run: 
+docker build -t my-frontend . 
+docker run -p 3000:3000 my-frontend
 
-pip install tf-keras 
-
-(we forgot to add these)
-
-In frontend folder, cd into my-app and run: npm run dev
 
 In backend folder, run: python3 app.py
 
